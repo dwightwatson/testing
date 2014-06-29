@@ -1,0 +1,27 @@
+{
+    "name": "watson/testing",
+    "description": "Laravel controller and model testing helpers.",
+    "keywords": ["laravel", "testing", "phpunit"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dwight Watson",
+            "email": "dwight@studiousapp.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/database": "4.2.*",
+        "illuminate/support": "4.2.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "4.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Watson\\Testing\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
