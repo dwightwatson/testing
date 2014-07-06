@@ -103,6 +103,60 @@ $this->assertInvalidWith($user, 'email', 'foo');
 $this->assertInvalidWithout($user, 'email');
 ```
 
+### Specific model validations
+
+If you'd prefer an easier (and more readable) way of asserting the validations on your model you might like to try specific model validations. They work with [watson/validating](https://github.com/dwightwatson/validating) or any other validation trait that complies with `Watson\Validating\ValidatingInterface` (that is, has a `getDefaultRules` method).
+
+#### assertValidatesWith(Model $mode, $attribute, $rule, $message = null)
+
+```php
+// Assert that the email attribute is required.
+$this->assertValidatesWith($user, 'email', 'required');
+$this->assertValidatesRequired($user, 'email');
+```
+
+Here is the list of included Laravel default validation assertions:
+
+* assertValidatesAccepted(Model $model, $attribute, $message = null)
+* assertValidatesActiveUrl(Model $model, $attribute)
+* assertValidatesAfter(Model $model, $attribute, $date)
+* assertValidatesAlpha(Model $model, $attribute)
+* assertValidatesAlphaDash(Model $model, $attribute)
+* assertValidatesAlphaNum(Model $model, $attribute)
+* assertValidatesArray(Model $model, $attribute)
+* assertValidatesBefore(Model $model, $attribute, $date)
+* assertValidatesBetween(Model $model, $attribute, $min, $max)
+* assertValidatesConfirmed(Model $model, $attribute)
+* assertValidatesDate(Model $model, $attribute)
+* assertValidatesDate(Model $model, $attribute)
+* assertValidatesDifferent(Model $model, $attribute, $field)
+* assertValidatesDigits(Model $model, $attribute, $value)
+* assertValidatesDigitsBetween(Model $model, $attribute, $min, $max)
+* assertValidatesBoolean(Model $model, $attribute)
+* assertValidatesEmail(Model $model, $attribute)
+* assertValidatesExists(Model $model, $attribute, $parameters)
+* assertValidatesImage(Model $model, $attribute)
+* assertValidatesIn(Model $model, $attribute, $values)
+* assertValidatesInteger(Model $model, $attribute)
+* assertValidatesIp(Model $model, $attribute)
+* assertValidatesMax(Model $model, $attribute, $value)
+* assertValidatesMimes(Model $model, $attribute, $values)
+* assertValidatesMin(Model $model, $attribute, $value)
+* assertValidatesNotIn(Model $model, $attribute, $values)
+* assertValidatesNumeric(Model $model, $attribute)
+* assertValidatesRegex(Model $model, $attribute, $pattern)
+* assertValidatesRequired(Model $model, $attribute)
+* assertValidatesRequiredIf(Model $model, $attribute, $field, $value)
+* assertValidatesRequiredWith(Model $model, $attribute, $values)
+* assertValidatesRequiredWithAll(Model $model, $attribute, $values)
+* assertValidatesRequiredWithout(Model $model, $attribute, $values)
+* assertValidatesRequiredWithoutAll(Model $model, $attribute, $values)
+* assertValidatesSame(Model $model, $attribute, $field)
+* assertValidatesSize(Model $model, $attribute, $value)
+* assertValidatesTimezone(Model $model, $attribute)
+* assertValidatesUnique(Model $model, $attribute, $parameters)
+
+
 ### Model relationships
 
 You can assert the different relationships exist on your model.

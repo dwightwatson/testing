@@ -7,36 +7,6 @@ use \Mockery;
 trait ModelHelpers {
 
     /**
-     * Get the default rules of a model.
-     *
-     * @param  Model  $model
-     * @return array
-     */
-    public function getDefaultRules(Model $model)
-    {
-        $this->assertRespondsTo($model, 'getDefaultRules');
-
-        return $model->getDefaultRules();
-    }
-
-    /**
-     * Get the rules of a given attribute as an array.
-     *
-     * @param  Model   $model
-     * @param  string  $attribute
-     * @return array
-     */
-    public function getAttributeRules(Model $model, $attribute)
-    {
-        $rules = $this->getDefaultRules($model);
-
-        if (array_key_exists($attribute, $rules))
-        {
-            return is_array($rules[$attribute]) ? $rules[$attribute] : explode('|', $rules[$attribute]);
-        }
-    }
-
-    /**
      * Assert that the provided model is valid. Requires that the model has a
      * method called isValid().
      *
@@ -138,6 +108,52 @@ trait ModelHelpers {
     }
 
     /**
+     * Get the default rules of a model.
+     *
+     * @param  Model  $model
+     * @return array
+     */
+    public function getDefaultRules(Model $model)
+    {
+        $this->assertRespondsTo($model, 'getDefaultRules');
+
+        return $model->getDefaultRules();
+    }
+
+    /**
+     * Get the rules of a given attribute as an array.
+     *
+     * @param  Model   $model
+     * @param  string  $attribute
+     * @return array
+     */
+    public function getAttributeRules(Model $model, $attribute)
+    {
+        $rules = $this->getDefaultRules($model);
+
+        if (array_key_exists($attribute, $rules))
+        {
+            return is_array($rules[$attribute]) ? $rules[$attribute] : explode('|', $rules[$attribute]);
+        }
+    }
+
+    /**
+     * Assert that the model validates a given attribute with a given rule.
+     *
+     * @param  Model   $model
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  string  $message
+     * @return void
+     */
+    public function assertValidatesWith(Model $model, $attribute, $rule, $message = null)
+    {
+        $rules = $this->getAttributeRules($model, $attribute);
+
+        $this->assertContains($rule, $rules, $message);
+    }
+
+    /**
      * Assert that the model validates a given attribute with 'accepted'.
      *
      * @param  Model   $model
@@ -146,9 +162,7 @@ trait ModelHelpers {
      */
     public function assertValidatesAccepted(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('accepted', $rules, "Expected $attribute to have 'accepted' validation.");
+        $this->assertValidatesWith($model, $attribute, 'accepted', "Expected $attribute to have 'accepted' validation.");
     }
 
     /**
@@ -160,9 +174,7 @@ trait ModelHelpers {
      */
     public function assertValidatesActiveUrl(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('active_url', $rules, "Expected $attribute to have 'active_url' validation.");
+        $this->assertValidatesWith($model, $attribute, 'active_url', "Expected $attribute to have 'active_url' validation.");
     }
 
     /**
@@ -175,9 +187,7 @@ trait ModelHelpers {
      */
     public function assertValidatesAfter(Model $model, $attribute, $date)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("after:$date", $rules, "Expected $attribute to have 'after' validation with date $date.");
+        $this->assertValidatesWith($model, $attribute, "after:$date", $rules, "Expected $attribute to have 'after' validation with date $date.");
     }
 
     /**
@@ -189,9 +199,7 @@ trait ModelHelpers {
      */
     public function assertValidatesAlpha(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('alpha', $rules, "Expected $attribute to have 'alpha' validation.");
+        $this->assertValidatesWith($model, $attribute, 'alpha', "Expected $attribute to have 'alpha' validation.");
     }
 
     /**
@@ -203,9 +211,7 @@ trait ModelHelpers {
      */
     public function assertValidatesAlphaDash(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('alpha_dash', $rules, "Expected $attribute to have 'alpha_dash' validation.");
+        $this->assertValidatesWith($model, $attribute, 'alpha_dash', "Expected $attribute to have 'alpha_dash' validation.");
     }
 
     /**
@@ -217,9 +223,7 @@ trait ModelHelpers {
      */
     public function assertValidatesAlphaNum(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('alpha_num', $rules, "Expected $attribute to have 'alpha_num' validation.");
+        $this->assertValidatesWith($model, $attribute, 'alpha_num', "Expected $attribute to have 'alpha_num' validation.");
     }
 
     /**
@@ -231,9 +235,7 @@ trait ModelHelpers {
      */
     public function assertValidatesArray(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('array', $rules, "Expected $attribute to have 'array' validation.");
+        $this->assertValidatesWith($model, $attribute, 'array', "Expected $attribute to have 'array' validation.");
     }
 
     /**
@@ -247,9 +249,7 @@ trait ModelHelpers {
      */
     public function assertValidatesBefore(Model $model, $attribute, $date)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("date:$date", $rules, "Expected $attribute to have 'date' validation with $date.");
+        $this->assertValidatesWith($model, $attribute, "date:$date", "Expected $attribute to have 'date' validation with $date.");
     }
 
     /**
@@ -264,9 +264,7 @@ trait ModelHelpers {
      */
     public function assertValidatesBetween(Model $model, $attribute, $min, $max)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("between:$min,$max", $rules, "Expected $attribute to have 'between' validation with $min,$max.");
+        $this->assertValidatesWith($model, $attribute, "between:$min,$max", "Expected $attribute to have 'between' validation with $min,$max.");
     }
 
     /**
@@ -278,9 +276,7 @@ trait ModelHelpers {
      */
     public function assertValidatesConfirmed(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('contirmed', $rules, "Expected $attribute to have 'confirmed' validation.");
+        $this->assertValidatesWith($model, $attribute, 'contirmed', "Expected $attribute to have 'confirmed' validation.");
     }
 
     /**
@@ -292,9 +288,7 @@ trait ModelHelpers {
      */
     public function assertValidatesDate(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('date', $rules, "Expected $attribute to have 'date' validation.");
+        $this->assertValidatesWith($model, $attribute, 'date', "Expected $attribute to have 'date' validation.");
     }
 
     /**
@@ -308,9 +302,7 @@ trait ModelHelpers {
      */
     public function assertValidatesDateFormat(Model $model, $attribute, $format)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("format:$format", $rules, "Expected $attribute to have 'format' validation with $format.");
+        $this->assertValidatesWith($model, $attribute, "format:$format", "Expected $attribute to have 'format' validation with $format.");
     }
 
     /**
@@ -323,9 +315,7 @@ trait ModelHelpers {
      */
     public function assertValidatesDifferent(Model $model, $attribute, $field)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("different:$field", $rules, "Expected $attribute to have 'different' validation with $field.");
+        $this->assertValidatesWith($model, $attribute, "different:$field", "Expected $attribute to have 'different' validation with $field.");
     }
 
     /**
@@ -339,9 +329,7 @@ trait ModelHelpers {
      */
     public function assertValidatesDigits(Model $model, $attribute, $value)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("digits:$value", $rules, "Expected $attribute to have 'digits' validation with $value.");
+        $this->assertValidatesWith($model, $attribute, "digits:$value", "Expected $attribute to have 'digits' validation with $value.");
     }
 
     /**
@@ -356,9 +344,7 @@ trait ModelHelpers {
      */
     public function assertValidatesDigitsBetween(Model $model, $attribute, $min, $max)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("digits_between:$min,$max", $rules, "Expected $attribute to have 'digits_between' validation with $min,$max.");
+        $this->assertValidatesWith($model, $attribute, "digits_between:$min,$max", "Expected $attribute to have 'digits_between' validation with $min,$max.");
     }
 
     /**
@@ -370,9 +356,7 @@ trait ModelHelpers {
      */
     public function assertValidatesBoolean(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('boolean', $rules, "Expected $attribute to have 'booleam' validation.");
+        $this->assertValidatesWith($model, $attribute, 'boolean', "Expected $attribute to have 'booleam' validation.");
     }
 
     /**
@@ -384,9 +368,7 @@ trait ModelHelpers {
      */
     public function assertValidatesEmail(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('email', $rules, "Expected $attribute to have 'email' validation.");
+        $this->assertValidatesWith($model, $attribute, 'email', "Expected $attribute to have 'email' validation.");
     }
 
     /**
@@ -400,9 +382,7 @@ trait ModelHelpers {
      */
     public function assertValidatesExists(Model $model, $attribute, $parameters)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("exists:$parameters", $rules, "Expected $attribute to have 'exists' validation with $parameters");
+        $this->assertValidatesWith($model, $attribute, "exists:$parameters", "Expected $attribute to have 'exists' validation with $parameters");
     }
 
     /**
@@ -414,9 +394,7 @@ trait ModelHelpers {
      */
     public function assertValidatesImage(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('image', $rules, "Expected $attribute to have 'image' validation.");
+        $this->assertValidatesWith($model, $attribute, 'image', "Expected $attribute to have 'image' validation.");
     }
 
     /**
@@ -429,11 +407,9 @@ trait ModelHelpers {
      */
     public function assertValidatesIn(Model $model, $attribute, $values)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
         $values = implode(',', (array) $values);
 
-        $this->assertContains("in:$values", $rules, "Expected $attribute to have 'in' validation with $values.");
+        $this->assertValidatesWith($model, $attribute, "in:$values", "Expected $attribute to have 'in' validation with $values.");
     }
 
     /**
@@ -445,9 +421,7 @@ trait ModelHelpers {
      */
     public function assertValidatesInteger(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('integer', $rules, "Expected $attribute to have 'integer' validation.");
+        $this->assertValidatesWith($model, $attribute, 'integer', $rules, "Expected $attribute to have 'integer' validation.");
     }
 
     /**
@@ -459,9 +433,7 @@ trait ModelHelpers {
      */
     public function assertValidatesIp(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('ip', $rules, "Expected $attribute to have 'ip' validation.");
+        $this->assertValidatesWith($model, $attribute, 'ip', "Expected $attribute to have 'ip' validation.");
     }
 
     /**
@@ -474,9 +446,7 @@ trait ModelHelpers {
      */
     public function assertValidatesMax(Model $model, $attribute, $value)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("max:$value", $rules, "Expected $attribute to have 'max' validation with $value.");
+        $this->assertValidatesWith($model, $attribute, "max:$value", "Expected $attribute to have 'max' validation with $value.");
     }
 
     /**
@@ -490,11 +460,9 @@ trait ModelHelpers {
      */
     public function assertValidatesMimes(Model $model, $attribute, $values)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
         $values = implode(',', (array) $values);
 
-        $this->assertContains("mimes:$values", $rules, "Expected $attribute to have 'mimes' validation with $values.");
+        $this->assertValidatesWith($model, $attribute, "mimes:$values", "Expected $attribute to have 'mimes' validation with $values.");
     }
 
     /**
@@ -507,9 +475,7 @@ trait ModelHelpers {
      */
     public function assertValidatesMin(Model $model, $attribute, $value)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("min:$value", $rules, "Expected $attribute to have 'min' validation with $value.");
+        $this->assertValidatesWith($model, $attribute, "min:$value", "Expected $attribute to have 'min' validation with $value.");
     }
 
     /**
@@ -523,11 +489,9 @@ trait ModelHelpers {
      */
     public function assertValidatesNotIn(Model $model, $attribute, $values)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
         $values = implode(',', (array) $values);
 
-        $this->assertContains("not_in:$values", $rules, "Expected $attribute to have 'not_in' validation with $values.");
+        $this->assertValidatesWith($model, $attribute, "not_in:$values", "Expected $attribute to have 'not_in' validation with $values.");
     }
 
     /**
@@ -539,9 +503,7 @@ trait ModelHelpers {
      */
     public function assertValidatesNumeric(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('numeric', $rules, "Expected $attribute to have 'numeric' validation.");
+        $this->assertValidatesWith($model, $attribute, 'numeric', "Expected $attribute to have 'numeric' validation.");
     }
 
     /**
@@ -555,9 +517,7 @@ trait ModelHelpers {
      */
     public function assertValidatesRegex(Model $model, $attribute, $pattern)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("regex:$pattern", $rules, "Expected $attribute to have 'regex' validation with $pattern.");
+        $this->assertValidatesWith($model, $attribute, "regex:$pattern", "Expected $attribute to have 'regex' validation with $pattern.");
     }
 
     /**
@@ -569,9 +529,7 @@ trait ModelHelpers {
      */
     public function assertValidatesRequired(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('required', $rules, "Expected $attribute to have 'required' validation.");
+        $this->assertValidatesWith($model, $attribute, 'required', "Expected $attribute to have 'required' validation.");
     }
 
     /**
@@ -586,9 +544,7 @@ trait ModelHelpers {
      */
     public function assertValidatesRequiredIf(Model $model, $attribute, $field, $value)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("required_if:$field,$value", $rules, "Expected $attribute to have 'required_if' validation with $field,$value.");
+        $this->assertValidatesWith($model, $attribute, "required_if:$field,$value", "Expected $attribute to have 'required_if' validation with $field,$value.");
     }
 
     /**
@@ -602,11 +558,9 @@ trait ModelHelpers {
      */
     public function assertValidatesRequiredWith(Model $model, $attribute, $values)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
         $values = implode(',', (array) $values);
 
-        $this->assertContains("required_with:$values", $rules, "Expected $attribute to have 'required_with' validation with $values.");
+        $this->assertValidatesWith($model, $attribute, "required_with:$values", "Expected $attribute to have 'required_with' validation with $values.");
     }
 
     /**
@@ -620,11 +574,9 @@ trait ModelHelpers {
      */
     public function assertValidatesRequiredWithAll(Model $model, $attribute, $values)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
         $values = implode(',', (array) $values);
 
-        $this->assertContains("required_with_all:$values", $rules, "Expected $attribute to have 'required_with_all' validation with $values.");
+        $this->assertValidatesWith($model, $attribute, "required_with_all:$values", "Expected $attribute to have 'required_with_all' validation with $values.");
     }
 
     /**
@@ -638,11 +590,9 @@ trait ModelHelpers {
      */
     public function assertValidatesRequiredWithout(Model $model, $attribute, $values)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
         $values = implode(',', (array) $values);
 
-        $this->assertContains("required_without:$values", $rules, "Expected $attribute to have 'required_without' validation with $values.");
+        $this->assertValidatesWith($model, $attribute, "required_without:$values", "Expected $attribute to have 'required_without' validation with $values.");
     }
 
     /**
@@ -656,11 +606,9 @@ trait ModelHelpers {
      */
     public function assertValidatesRequiredWithoutAll(Model $model, $attribute, $values)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
         $values = implode(',', (array) $values);
 
-        $this->assertContains("required_without_all:$values", $rules, "Expected $attribute to have 'required_without_all' validation with $values.");
+        $this->assertValidatesWith($model, $attribute, "required_without_all:$values", "Expected $attribute to have 'required_without_all' validation with $values.");
     }
 
     /**
@@ -674,9 +622,7 @@ trait ModelHelpers {
      */
     public function assertValidatesSame(Model $model, $attribute, $field)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("same:$field", $rules, "Expected $attribute to have 'same' validation with $field.");
+        $this->assertValidatesWith($model, $attribute, "same:$field", "Expected $attribute to have 'same' validation with $field.");
     }
 
     /**
@@ -690,9 +636,7 @@ trait ModelHelpers {
      */
     public function assertValidatesSize(Model $model, $attribute, $value)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("size:$value", $rules, "Expected $attribute to have 'size' validation with $value.");
+        $this->assertValidatesWith($model, $attribute, "size:$value", "Expected $attribute to have 'size' validation with $value.");
     }
 
     /**
@@ -704,9 +648,7 @@ trait ModelHelpers {
      */
     public function assertValidatesTimezone(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('timezone', $rules, "Expected $attribute to have 'timezone' validation.");
+        $this->assertValidatesWith($model, $attribute, 'timezone', "Expected $attribute to have 'timezone' validation.");
     }
 
     /**
@@ -720,9 +662,7 @@ trait ModelHelpers {
      */
     public function assertValidatesUnique(Model $model, $attribute, $parameters)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains("unique:$parameters", $rules, "Expected $attribute to have 'unique' validation with $parameters.");
+        $this->assertValidatesWith($model, $attribute, "unique:$parameters", "Expected $attribute to have 'unique' validation with $parameters.");
     }
 
     /**
@@ -734,9 +674,7 @@ trait ModelHelpers {
      */
     public function assertValidatesUrl(Model $model, $attribute)
     {
-        $rules = $this->getAttributeRules($model, $attribute);
-
-        $this->assertContains('url', $rules, "Expected $attribute to have 'url' validation.");
+        $this->assertValidateWith($model, $attribute, 'url', "Expected $attribute to have 'url' validation.");
     }
 
     /**
