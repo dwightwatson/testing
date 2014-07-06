@@ -1,6 +1,6 @@
 <?php
 
-class ModelTraitTest extends \PHPUnit_Framework_TestCase {
+class ModelHelpersTest extends \PHPUnit_Framework_TestCase {
 
     use \Watson\Testing\ModelHelpers;
 
@@ -9,6 +9,64 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
     public function setUp()
     {
         $this->model = Mockery::mock('EloquentStub');
+    }
+
+    public function testGetDefaultRules()
+    {
+        $this->model->shouldReceive('getDefaultRules')
+            ->once()
+            ->andReturn('foo');
+
+        $this->assertEquals('foo', $this->getDefaultRules($this->model));
+    }
+
+    public function testGetAttributeRules()
+    {
+        $this->model->shouldReceive('getDefaultRules')
+            ->once()
+            ->andReturn(['zero' => 'bar']);
+
+        $result = $this->getAttributeRules($this->model, 'zero');
+
+        $this->assertEquals(['bar'], $result);
+    }
+
+    public function testAssertValidatesWithNoParameter()
+    {
+        $this->model->shouldReceive('getDefaultRules')
+            ->once()
+            ->andReturn(['foo' => 'required']);
+
+        $this->assertValidatesRequired($this->model, 'foo');
+    }
+
+    public function testAssertValidatesWithOneParameter()
+    {
+        $this->model->shouldReceive('getDefaultRules')
+            ->once()
+            ->andReturn(['foo' => 'min:5']);
+
+        $this->assertValidatesMin($this->model, 'foo', 5);
+    }
+
+    public function testAssertValidatesWithTwoParameters()
+    {
+        $this->model->shouldReceive('getDefaultRules')
+            ->once()
+            ->andReturn(['foo' => 'required_if:foo,bar']);
+
+        $this->assertValidatesRequiredIf($this->model, 'foo', 'foo', 'bar');
+    }
+
+    public function testAssertValidatesWithMultipleParameters()
+    {
+        $this->model->shouldReceive('getDefaultRules')
+            ->twice()
+            ->andReturn(['foo' => 'not_in:foo,bar,baz']);
+
+        // Test array and string syntax.
+        $this->assertValidatesNotIn($this->model, 'foo', ['foo', 'bar', 'baz']);
+        $this->assertValidatesNotIn($this->model, 'foo', 'foo,bar,baz');
     }
 
     public function testAssertValid()
@@ -110,6 +168,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
 
 class EloquentStub extends \Illuminate\Database\Eloquent\Model {
 
+    public function getDefaultRules() {}
     public function isValid() {}
     public function isInvalid() {}
 

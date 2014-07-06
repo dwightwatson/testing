@@ -2,7 +2,7 @@
 
 use \Illuminate\Support\Facades\View;
 
-class ControllerTraitTest extends \PHPUnit_Framework_TestCase {
+class ControllerHelpersTest extends \PHPUnit_Framework_TestCase {
 
     use Watson\Testing\ControllerHelpers;
 
