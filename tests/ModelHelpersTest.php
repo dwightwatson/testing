@@ -80,9 +80,9 @@ class ModelHelpersTest extends \PHPUnit_Framework_TestCase {
 
     public function testAssertInvalid()
     {
-        $this->model->shouldReceive('isInvalid')
+        $this->model->shouldReceive('isValid')
             ->once()
-            ->andReturn(true);
+            ->andReturn(false);
 
         $this->assertInvalid($this->model);
     }
@@ -119,9 +119,9 @@ class ModelHelpersTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->with('foo', 'bar');
 
-        $this->model->shouldReceive('isInvalid')
+        $this->model->shouldReceive('isValid')
             ->once()
-            ->andReturn(true);
+            ->andReturn(false);
 
         $this->assertInvalidWith($this->model, 'foo', 'bar');
     }
@@ -132,9 +132,9 @@ class ModelHelpersTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->with('foo', null);
 
-        $this->model->shouldReceive('isInvalid')
+        $this->model->shouldReceive('isValid')
             ->once()
-            ->andReturn(true);
+            ->andReturn(false);
 
         $this->assertInvalidWithout($this->model, 'foo');
     }

@@ -35,7 +35,7 @@ trait ModelHelpers {
         $message = $message ?: "Expected {get_class($model)} model to be invalid.";
 
         $this->assertRespondsTo($model, 'isInvalid', 'Expected isInvalid() method on model.');
-        $this->assertTrue($model->isInvalid(), $message);
+        $this->assertFalse($model->isValid(), $message);
     }
 
     /**
