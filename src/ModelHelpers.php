@@ -421,7 +421,7 @@ trait ModelHelpers {
      */
     public function assertValidatesInteger(Model $model, $attribute)
     {
-        $this->assertValidatesWith($model, $attribute, 'integer', $rules, "Expected $attribute to have 'integer' validation.");
+        $this->assertValidatesWith($model, $attribute, 'integer', "Expected $attribute to have 'integer' validation.");
     }
 
     /**
