@@ -749,11 +749,11 @@ trait ModelHelpers {
      */
     public function assertRelationship($class, $relationship, $type)
     {
+        $class = is_string($class) ? $class : get_class($class);
+
         $this->assertRespondsTo($class, $relationship);
 
         $args = $this->getRelationshipArguments($class, $relationship, $type);
-
-        $class = is_string($class) ? $class : get_class($class);
 
         $class = Mockery::mock($class."[$type]")
             ->shouldIgnoreMissing()
