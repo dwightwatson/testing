@@ -187,7 +187,7 @@ trait ModelHelpers {
      */
     public function assertValidatesAfter(Model $model, $attribute, $date)
     {
-        $this->assertValidatesWith($model, $attribute, "after:$date", $rules, "Expected $attribute to have 'after' validation with date $date.");
+        $this->assertValidatesWith($model, $attribute, "after:$date", "Expected $attribute to have 'after' validation with date $date.");
     }
 
     /**
@@ -680,7 +680,7 @@ trait ModelHelpers {
     /**
      * Assert that the provided object has the provided method.
      *
-     * @param  string  $class
+     * @param  mixed   $class
      * @param  mixed   $method
      * @param  string  $message
      * @return void
@@ -693,7 +693,7 @@ trait ModelHelpers {
     /**
      * Assert that the provided class belongs to the provided relation.
      *
-     * @param  string  $class
+     * @param  mixed   $class
      * @param  string  $relation
      * @return void
      */
@@ -705,7 +705,7 @@ trait ModelHelpers {
     /**
      * Assert that the provided class belongs to many of the provided relation.
      *
-     * @param  string  $class
+     * @param  mixed   $class
      * @param  string  $relation
      * @return void
      */
@@ -717,7 +717,7 @@ trait ModelHelpers {
     /**
      * Assert that the provided class has one of the provided relation.
      *
-     * @param  string  $class
+     * @param  mixed   $class
      * @param  string  $relation
      * @return void
      */
@@ -729,7 +729,7 @@ trait ModelHelpers {
     /**
      * Assert that the provided class has one of the provided relation.
      *
-     * @param  string  $class
+     * @param  mixed   $class
      * @param  string  $relation
      * @return void
      */
@@ -742,7 +742,7 @@ trait ModelHelpers {
      * Assert that the provided relationship of type exists on the provided
      * class.
      *
-     * @param  string  $class
+     * @param  mixed   $class
      * @param  string  $relationship
      * @param  string  $type
      * @return void
@@ -752,6 +752,8 @@ trait ModelHelpers {
         $this->assertRespondsTo($class, $relationship);
 
         $args = $this->getRelationshipArguments($class, $relationship, $type);
+
+        $class = is_string($class) ? $class : get_class($class);
 
         $class = Mockery::mock($class."[$type]")
             ->shouldIgnoreMissing()

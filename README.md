@@ -166,7 +166,7 @@ You can assert the different relationships exist on your model.
 Ensure that a post belongs to a user.
 
 ```php
-$this->assertBelongsTo('Post', 'User');
+$this->assertBelongsTo($post, 'user');
 ```
 
 #### assertBelongsToMany($class, $relation)
@@ -174,7 +174,7 @@ $this->assertBelongsTo('Post', 'User');
 Ensure that a tag belongs to many posts.
 
 ```php
-$this->assertBelongsToMany('Tag', 'Posts');
+$this->assertBelongsToMany($tag, 'posts');
 ```
 
 #### assertHasOne($class, $relation)
@@ -182,7 +182,7 @@ $this->assertBelongsToMany('Tag', 'Posts');
 Ensure that a user has one profile.
 
 ```php
-$this->assertHasOne('User', 'Profile');
+$this->assertHasOne($user, 'profile');
 ```
 
 #### assertHasMany($class, $relation)
@@ -190,7 +190,7 @@ $this->assertHasOne('User', 'Profile');
 Ensure that a user has many posts.
 
 ```php
-$this->assertHasMany('User', 'Posts');
+$this->assertHasMany($user, 'posts');
 ```
 
 ## Credits
