@@ -6,6 +6,17 @@ use \Mockery;
 
 trait ModelHelpers {
 
+    /** 
+     * Reset the model events and then re-register them.
+     *
+     * @return void
+     */
+    public function resetEvents()
+    {
+        static::flushEventListeners();
+        static::boot();
+    }
+
     /**
      * Assert that the provided model is valid. Requires that the model has a
      * method called isValid().
@@ -674,7 +685,7 @@ trait ModelHelpers {
      */
     public function assertValidatesUrl(Model $model, $attribute)
     {
-        $this->assertValidateWith($model, $attribute, 'url', "Expected $attribute to have 'url' validation.");
+        $this->assertValidatesWith($model, $attribute, 'url', "Expected $attribute to have 'url' validation.");
     }
 
     /**
