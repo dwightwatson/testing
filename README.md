@@ -10,7 +10,7 @@ Testing contains traits with helpers for testing models and controllers in Larav
 Simply add the package to your `composer.json` file and run `composer update`.
 
 ```
-"watson/testing": "1.0.*"
+"watson/testing": "~1.0"
 ```
 
 ## Overview
