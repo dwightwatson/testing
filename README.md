@@ -7,11 +7,13 @@ Testing contains traits with helpers for testing models and controllers in Larav
 
 # Installation
 
-Simply add the package to your `composer.json` file and run `composer update`.
+Simply run the following Composer command in your application.
 
+```bash
+composer require watson/testing
 ```
-"watson/testing": "~1.0"
-```
+
+The `~1.0` stream is for Laravel 4, and the `~2.0` stream is for Laravel 5.
 
 ## Overview
 

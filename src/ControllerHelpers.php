@@ -11,7 +11,7 @@ trait ControllerHelpers {
      */
     public function assertViewIs($expectedView, $message = null)
     {
-        $actualView = $this->client->getResponse()->getOriginalContent()->getName();
+        $actualView = $this->response->getOriginalContent()->getName();
 
         $this->assertEquals($expectedView, $actualView, $message);
     }
