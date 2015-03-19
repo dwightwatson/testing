@@ -8,12 +8,12 @@ class ControllerHelpersTest extends \PHPUnit_Framework_TestCase {
 
     public $controller;
 
-    public $client;
+    public $response;
 
     public function setUp()
     {
         $this->controller = new ControllerStub;
-        $this->client = Mockery::mock('Illuminate\Foundation\Testing\Client');
+        $this->response = Mockery::mock('Illuminate\Foundation\Testing\Client');
     }
 
     public function tearDown()
@@ -27,12 +27,10 @@ class ControllerHelpersTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->with('foo');
 
-        $this->client->shouldReceive('getResponse')
+        $this->response->shouldReceive('getOriginalContent')
             ->once()
             ->andReturn(Mockery::mock([
-                'getOriginalContent' => Mockery::mock([
-                    'getName' => 'foo'
-                ])
+                'getName' => 'foo'
             ]));
 
         $this->controller->show();
