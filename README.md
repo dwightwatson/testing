@@ -1,7 +1,7 @@
 Testing, PHPUnit helpers for Laravel
 ====================================
 
-[![Build Status](https://travis-ci.org/dwightwatson/testing.svg?branch=master)](https://travis-ci.org/dwightwatson/testing)
+## This package is no longer maintained, in favour of better testing support now shipping with Laravel.
 
 Testing contains traits with helpers for testing models and controllers in Laravel. It helps you assert the validity of your models (assuming the use of [watson/validating](https://github.com/dwightwatson/validating)) as well as the relationships of your models. It also allows you to test the responses of your controllers.
 
